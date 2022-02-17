@@ -8,6 +8,7 @@ public class playerController : MonoBehaviour
     private Animator playerAnimator;
 
     private bool isCurrentlyJumping = false, isCurrentlyMoving = false, isCurrentlySprinting = false;
+    private bool isJumpBeingPressed = false;
 
     private float horizontalMovement = 0f;
     private float originalLinearDrag;
@@ -19,6 +20,8 @@ public class playerController : MonoBehaviour
     #region Public
     public int jumpHeight = 16;
     public int playerSpeed = /*1*/ 8;
+
+    public List<string> colorsAcquired = new List<string>();
     #endregion
 
     void Start() { playerAnimator = GetComponent<Animator>(); rb2D = GetComponent<Rigidbody2D>(); originalLinearDrag = rb2D.drag; }
@@ -27,10 +30,16 @@ public class playerController : MonoBehaviour
 
     void FixedUpdate() { movement(); }
 
-    void OnTriggerEnter2D(Collider2D collision) { if (collision.tag == "Ground") { Debug.Log("false"); isCurrentlyJumping = false; } }
-    void OnTriggerExit2D(Collider2D collision) { if (collision.tag == "Ground") { Debug.Log("true"); isCurrentlyJumping = true; } }
+    void OnTriggerExit2D(Collider2D collision) { if (collision.tag == "Ground") { isCurrentlyJumping = true; } }
+    void OnTriggerStay2D(Collider2D collision) { if (collision.tag == "Ground") { isCurrentlyJumping = false; } }
 
-    private void getInput() { horizontalMovement = Input.GetAxisRaw("Horizontal"); }
+    private void getInput() 
+    {
+        if (!Input.GetKey(KeyCode.Space)) { isJumpBeingPressed = false; }
+        else { isJumpBeingPressed = true; }
+
+        horizontalMovement = Input.GetAxisRaw("Horizontal"); 
+    }
 
     private void movement()
     {
@@ -50,13 +59,13 @@ public class playerController : MonoBehaviour
         { 
             isCurrentlyMoving = false;
 
-            if (rb2D.velocity.x == 0f) { if (timeToSwitchDirection != 0.1875f) { timeToSwitchDirection = 0.1875f; } }
+            if(!isCurrentlyMoving && !isCurrentlySprinting) { playerAnimator.SetBool("isMoving", false); }
 
-            playerAnimator.SetBool("isMoving", false);
+            if (rb2D.velocity.x == 0f) { if (timeToSwitchDirection != 0.1875f) { timeToSwitchDirection = 0.1875f; } }
         }
 
         // Jump
-        if (Input.GetKeyDown(KeyCode.Space) && !isCurrentlyJumping) { rb2D.AddForce(Vector2.up * jumpHeight, ForceMode2D.Impulse); }
+        if (!isCurrentlyJumping && isJumpBeingPressed) { rb2D.AddForce(Vector2.up * jumpHeight, ForceMode2D.Impulse); }
 
         sprint();
 
