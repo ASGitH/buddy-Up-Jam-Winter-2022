@@ -5,71 +5,99 @@ using UnityEngine;
 public class playerController : MonoBehaviour
 {
     #region Private
-    private bool isCurrentlyMoving = false, isCurrentlySprinting = false;
+    private Animator playerAnimator;
 
-    private float timeToBuildUpSprint = 3f, timeToSwitchDirection = 0.5f;
+    private bool isCurrentlyJumping = false, isCurrentlyMoving = false, isCurrentlySprinting = false;
+
+    private float horizontalMovement = 0f;
+    private float originalLinearDrag;
+    private float timeToBuildUpSprint = 0.5f, timeToSwitchDirection = 0.1875f;
+
+    private Rigidbody2D rb2D;
     #endregion
 
     #region Public
-    public float playerSpeed = 1f;
+    public int jumpHeight = 16;
+    public int playerSpeed = /*1*/ 8;
     #endregion
 
-    void Start()
-    {
-        
-    }
+    void Start() { playerAnimator = GetComponent<Animator>(); rb2D = GetComponent<Rigidbody2D>(); originalLinearDrag = rb2D.drag; }
 
-    // Update is called once per frame
-    void Update()
-    {
-        movement();   
-    }
+    void Update() { getInput(); }
+
+    void FixedUpdate() { movement(); }
+
+    void OnTriggerEnter2D(Collider2D collision) { if (collision.tag == "Ground") { Debug.Log("false"); isCurrentlyJumping = false; } }
+    void OnTriggerExit2D(Collider2D collision) { if (collision.tag == "Ground") { Debug.Log("true"); isCurrentlyJumping = true; } }
+
+    private void getInput() { horizontalMovement = Input.GetAxisRaw("Horizontal"); }
 
     private void movement()
     {
-        float horizontalMovement = Input.GetAxis("Horizontal"); float verticalMovement = Input.GetAxis("Vertical");
+        int layerMask = 1 << 8;
+        layerMask = ~layerMask;
 
-        if(horizontalMovement != 0f || verticalMovement != 0f) { isCurrentlyMoving = true; }
-        else if(horizontalMovement == 0f && verticalMovement == 0f) 
+        if (horizontalMovement != 0f) 
         { 
-            if(isCurrentlySprinting)
-            {
-                isCurrentlySprinting = false;
+            if(horizontalMovement > 0f) { GetComponent<SpriteRenderer>().flipX = false; }
+            else { GetComponent<SpriteRenderer>().flipX = true; }
 
-                playerSpeed /= 2f;
-            }
-            if(timeToBuildUpSprint != 0f) { timeToBuildUpSprint = 0f; }
+            isCurrentlyMoving = true;
 
-            isCurrentlyMoving = false;
+            playerAnimator.SetBool("isMoving", true);
         }
+        else 
+        { 
+            isCurrentlyMoving = false;
+
+            if (rb2D.velocity.x == 0f) { if (timeToSwitchDirection != 0.1875f) { timeToSwitchDirection = 0.1875f; } }
+
+            playerAnimator.SetBool("isMoving", false);
+        }
+
+        // Jump
+        if (Input.GetKeyDown(KeyCode.Space) && !isCurrentlyJumping) { rb2D.AddForce(Vector2.up * jumpHeight, ForceMode2D.Impulse); }
 
         sprint();
 
-        Vector3 movementVector = new Vector3(horizontalMovement, verticalMovement);
+        Vector2 movementVector = new Vector2(horizontalMovement, 0f);
 
-        transform.position += Vector3.ClampMagnitude(movementVector, 1f) * playerSpeed * Time.deltaTime;
+        rb2D.AddForce(new Vector2(horizontalMovement * playerSpeed, 0f), ForceMode2D.Impulse);
+
+        if(rb2D.velocity.x > playerSpeed) { rb2D.velocity = new Vector2(playerSpeed, rb2D.velocity.y); }
+        else if(rb2D.velocity.x < -playerSpeed) { rb2D.velocity = new Vector2(-playerSpeed, rb2D.velocity.y); }
     }
 
     private void sprint()
     {
-        if (!isCurrentlyMoving)
+        if (!isCurrentlyMoving) 
         {
-            if (!isCurrentlySprinting) { timeToBuildUpSprint = 0f; }
+            if (!isCurrentlySprinting) { if (timeToBuildUpSprint != 0f) { timeToBuildUpSprint = 0f; } }
             else
             {
-                // If the player has released the movement key, give the player a short amount of time to change direction, if they do change direction, don't affect the speed,
-                // if they don't after the given amount of time, then decrease the speed again
+                if (timeToSwitchDirection > 0f) { timeToSwitchDirection -= Time.deltaTime; }
+                else 
+                {
+                    isCurrentlySprinting = false;
+
+                    playerSpeed /= 2;
+                }
             }
         }
-        else if(isCurrentlyMoving && !isCurrentlySprinting)
+        else if(isCurrentlyMoving)
         {
-            if (timeToBuildUpSprint >= 3f)
+            if(!isCurrentlySprinting)
             {
-                isCurrentlySprinting = true;
+                if (timeToBuildUpSprint >= 0.5f)
+                {
+                    isCurrentlySprinting = true;
 
-                playerSpeed *= 2f;
+                    playerSpeed *= 2;
+
+                    timeToBuildUpSprint = 0f;
+                }
+                else { timeToBuildUpSprint += Time.deltaTime; }
             }
-            else { timeToBuildUpSprint += Time.deltaTime; }
         }
     }
 }
