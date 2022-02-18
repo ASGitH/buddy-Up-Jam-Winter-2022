@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum colorAbilities { bridge, jump, ladder, _null };
-public enum colorAbilityActions { _null, pickup, use };
+public enum colorAbilityActions { climb, _null, pickup, use };
 
 public class colorAbility : MonoBehaviour
 {
@@ -20,31 +20,56 @@ public class colorAbility : MonoBehaviour
     public GameObject objectToAppear;
     #endregion
 
-    void Start() { if (objectToAppear.activeSelf) { objectToAppear.SetActive(false); } }
+    void Start() { if (objectToAppear != null && objectToAppear.activeSelf) { objectToAppear.SetActive(false); } }
 
     void Update() { }
 
+    private void OnTriggerExit2D(Collider2D collision) 
+    { 
+        if (collision.tag == "Player") 
+        { 
+            if (_colorAbilityActions.ToString() == "climb" && Input.GetAxisRaw("Horizontal") == 0) 
+            {
+                collision.gameObject.GetComponent<playerController>().changeMovementState("move");
+
+                GetComponent<EdgeCollider2D>().enabled = true; 
+            }
+        }
+    }
+
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if(collision.tag == "Player" && Input.GetKeyDown(KeyCode.E))
+        if(collision.tag == "Player")
         {
-            if(_colorAbilityActions.ToString() == "pickup") 
+            if(Input.GetKeyDown(KeyCode.E))
             {
-                collision.gameObject.GetComponent<playerController>().colorsAcquired.Add(_colorAbility.ToString());
-
-                gameObject.SetActive(false);
-            }
-            else if (_colorAbilityActions.ToString() == "use")
-            {
-                foreach(string _color in collision.gameObject.GetComponent<playerController>().colorsAcquired)
+                if (_colorAbilityActions.ToString() == "pickup")
                 {
-                    if(_color == _colorAbility.ToString()) 
-                    {
-                        if (objectToAppear != null) { objectToAppear.SetActive(true); }
+                    collision.gameObject.GetComponent<playerController>().colorsAcquired.Add(_colorAbility.ToString());
 
-                        break;
+                    gameObject.SetActive(false);
+                }
+                else if (_colorAbilityActions.ToString() == "use")
+                {
+                    foreach (string _color in collision.gameObject.GetComponent<playerController>().colorsAcquired)
+                    {
+                        if (_color == _colorAbility.ToString())
+                        {
+                            if (objectToAppear != null) { objectToAppear.SetActive(true); }
+
+                            break;
+                        }
                     }
                 }
+            }
+            else if (Input.GetAxisRaw("Vertical") != 0) 
+            { 
+                if (_colorAbilityActions.ToString() == "climb") 
+                { 
+                    collision.gameObject.GetComponent<playerController>().changeMovementState("climb"); 
+                
+                    if(GetComponent<EdgeCollider2D>().enabled /*&& Input.GetAxisRaw("Vertical") < 0*/) { GetComponent<EdgeCollider2D>().enabled = false; }
+                } 
             }
         }
     }
