@@ -18,6 +18,8 @@ public class playerController : MonoBehaviour
     #endregion
 
     #region Public
+    public bool canJump = true;
+
     public int jumpHeight = 16;
     public int climbSpeed = 4, movementSpeed = /*1*/ 8;
 
@@ -94,13 +96,13 @@ public class playerController : MonoBehaviour
             if (rb2D.velocity.x == 0f) { if (timeToSwitchDirection != 0.1875f) { timeToSwitchDirection = 0.1875f; } }
         }
 
-        // Jump (lines 64 - 70)
+        // Jump (lines 99 - 105)
         RaycastHit2D hit2D = Physics2D.BoxCast(transform.position, new Vector2(0.075f, 0.02f), 0f, Vector2.down, 1.25f, layerMask);
         
         if(hit2D.collider != null) { isCurrentlyJumping = false; }
         else { isCurrentlyJumping = true; }
 
-        if (!isCurrentlyJumping && isJumpBeingPressed) { rb2D.AddForce(Vector2.up * jumpHeight, ForceMode2D.Impulse); }
+        if (canJump && !isCurrentlyJumping && isJumpBeingPressed) { rb2D.AddForce(Vector2.up * jumpHeight, ForceMode2D.Impulse); }
 
         sprint();
 
