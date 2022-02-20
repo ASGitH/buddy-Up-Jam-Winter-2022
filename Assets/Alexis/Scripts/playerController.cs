@@ -8,7 +8,6 @@ public class playerController : MonoBehaviour
     private Animator playerAnimator;
 
     private bool isCurrentlyClimbing = false, isCurrentlyJumping = false, isCurrentlyMoving = false, isCurrentlySprinting = false;
-    private bool isJumpBeingPressed = false;
 
     private float horizontalMovement = 0f, verticalMovement = 0f;
     private float originalGravityScale, originalLinearDrag, originalMass;
@@ -63,13 +62,7 @@ public class playerController : MonoBehaviour
         }
     }
 
-    private void getInput() 
-    {
-        if (!Input.GetKeyDown(KeyCode.Space)) { isJumpBeingPressed = false; }
-        else { isJumpBeingPressed = true; }
-
-        movementState();
-    }
+    private void getInput() { movementState(); }
 
     private void movement()
     {
@@ -96,13 +89,8 @@ public class playerController : MonoBehaviour
             if (rb2D.velocity.x == 0f) { if (timeToSwitchDirection != 0.1875f) { timeToSwitchDirection = 0.1875f; } }
         }
 
-        // Jump (lines 99 - 105)
-        RaycastHit2D hit2D = Physics2D.BoxCast(transform.position, new Vector2(0.075f, 0.02f), 0f, Vector2.down, 1.25f, layerMask);
-        
-        if(hit2D.collider != null) { isCurrentlyJumping = false; }
-        else { isCurrentlyJumping = true; }
-
-        if (canJump && !isCurrentlyJumping && isJumpBeingPressed) { rb2D.AddForce(Vector2.up * jumpHeight, ForceMode2D.Impulse); }
+        // Jump
+        if (canJump && Input.GetKeyDown(KeyCode.Space) && !isCurrentlyJumping) { rb2D.AddForce(Vector2.up * jumpHeight, ForceMode2D.Impulse); }
 
         sprint();
 
@@ -117,6 +105,9 @@ public class playerController : MonoBehaviour
         if (!isCurrentlyClimbing) { verticalMovement = 0f; horizontalMovement = Input.GetAxisRaw("Horizontal"); }
         else { verticalMovement = Input.GetAxisRaw("Vertical") * climbSpeed; }
     }
+
+    private void OnTriggerEnter2D(Collider2D collision) { if (collision.tag == "Ground") { isCurrentlyJumping = false; } }
+    private void OnTriggerExit2D(Collider2D collision) { if(collision.tag == "Ground") { isCurrentlyJumping = true; } }
 
     private void sprint()
     {

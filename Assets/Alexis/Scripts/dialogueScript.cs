@@ -21,5 +21,8 @@ public class dialogueScript : MonoBehaviour
 
     public float[] timeBetweenDialogueStrings;
 
+    public int currentLine = 0, previousLine = -1;
+    public int[] exitDirectorAtLineIndex;
+
     public PlayableDirector _playableDirector;
 }

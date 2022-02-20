@@ -12,7 +12,7 @@ public class dialogueManagement : MonoBehaviour
     #endregion
 
     #region Public
-    public dialogueScript _dialogueScript;
+    // public dialogueScript _dialogueScript;
 
     public float charBufferSpeed = 0f;
     #endregion
@@ -64,9 +64,11 @@ public class dialogueManagement : MonoBehaviour
     {
         referenceToUserInterfaceManagement = GameObject.FindGameObjectWithTag("UserInterface").GetComponent<userInterfaceManagement>();
 
-        for (int indexCounter = 0; indexCounter < _dialogue.dialogue.Length; indexCounter++)
+        for (int indexCounter = /*0*/_dialogue.previousLine + 1; indexCounter < _dialogue.dialogue.Length; indexCounter++)
         {
             string dialogue = _dialogue.dialogue[indexCounter];
+
+            _dialogue.currentLine = indexCounter;
 
             yield return run(dialogue, referenceToUserInterfaceManagement.dialogueText);
 
@@ -74,8 +76,11 @@ public class dialogueManagement : MonoBehaviour
 
             if (!_dialogue.automaticallyPlay) { yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Return)); }
             else { yield return new WaitForSeconds(_dialogue.timeBetweenDialogueStrings[indexCounter]); }
-            
+
+            if (_dialogue.isAffectedByDirector) { foreach (int _line in _dialogue.exitDirectorAtLineIndex) { if (_line == _dialogue.currentLine) { indexCounter = _dialogue.dialogue.Length; } } }
         }
+
+        _dialogue.previousLine = _dialogue.currentLine;
 
         if (!_dialogue.hasResponses) 
         {

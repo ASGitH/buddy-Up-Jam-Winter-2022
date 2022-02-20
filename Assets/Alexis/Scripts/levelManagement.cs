@@ -9,5 +9,5 @@ public class levelManagement : MonoBehaviour
 
     void Start() { playerGameObject = GameObject.FindGameObjectWithTag("Player"); }
 
-    void Update() { if(playerGameObject.transform.position.y < -25f) { SceneManager.LoadScene(0); } }
+    void Update() { if (playerGameObject != null && playerGameObject.transform.position.y < -25f) { SceneManager.LoadScene(0); } } 
 }
