@@ -89,8 +89,13 @@ public class playerController : MonoBehaviour
             if (rb2D.velocity.x == 0f) { if (timeToSwitchDirection != 0.1875f) { timeToSwitchDirection = 0.1875f; } }
         }
 
+        if (!Input.GetKey(KeyCode.Space)) { Debug.Log("Is not pressing space"); }
+        else { Debug.Log("Is pressing space"); }
+
+        Debug.Log("isCurrentlyJumping: " + isCurrentlyJumping);
+
         // Jump
-        if (canJump && Input.GetKeyDown(KeyCode.Space) && !isCurrentlyJumping) { rb2D.AddForce(Vector2.up * jumpHeight, ForceMode2D.Impulse); }
+        if (canJump && Input.GetKey(KeyCode.Space) && !isCurrentlyJumping) { rb2D.AddForce(Vector2.up * jumpHeight, ForceMode2D.Impulse); }
 
         sprint();
 
@@ -106,8 +111,10 @@ public class playerController : MonoBehaviour
         else { verticalMovement = Input.GetAxisRaw("Vertical") * climbSpeed; }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision) { if (collision.tag == "Ground") { isCurrentlyJumping = false; } }
+    //private void OnTriggerEnter2D(Collider2D collision) { if (collision.tag == "Ground") { isCurrentlyJumping = false; } }
     private void OnTriggerExit2D(Collider2D collision) { if(collision.tag == "Ground") { isCurrentlyJumping = true; } }
+    private void OnTriggerStay2D(Collider2D collision) { if (collision.tag == "Ground") { isCurrentlyJumping = false; } }
+
 
     private void sprint()
     {
