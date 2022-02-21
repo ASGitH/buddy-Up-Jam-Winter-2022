@@ -156,8 +156,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _colorAbility: 3
-  _colorAbilityActions: 3
+  _colorAbilityActions: 4
   objectToAppear: {fileID: 0}
+  transitionToScene: 
 --- !u!212 &1340455244429637945
 SpriteRenderer:
   m_ObjectHideFlags: 0

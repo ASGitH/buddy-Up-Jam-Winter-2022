@@ -1038,6 +1038,7 @@ MonoBehaviour:
   _colorAbility: 2
   _colorAbilityActions: 2
   objectToAppear: {fileID: 1468594633}
+  transitionToScene: 
 --- !u!61 &628489511
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1421,6 +1422,7 @@ MonoBehaviour:
   _colorAbility: 0
   _colorAbilityActions: 1
   objectToAppear: {fileID: 0}
+  transitionToScene: 
 --- !u!58 &927691019
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1894,6 +1896,7 @@ MonoBehaviour:
   _colorAbility: 3
   _colorAbilityActions: 0
   objectToAppear: {fileID: 0}
+  transitionToScene: 
 --- !u!68 &1468594638
 EdgeCollider2D:
   m_ObjectHideFlags: 0
@@ -2016,6 +2019,7 @@ MonoBehaviour:
   _colorAbility: 0
   _colorAbilityActions: 2
   objectToAppear: {fileID: 1433664146}
+  transitionToScene: 
 --- !u!61 &1517390606
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2142,6 +2146,7 @@ MonoBehaviour:
   _colorAbility: 2
   _colorAbilityActions: 1
   objectToAppear: {fileID: 0}
+  transitionToScene: 
 --- !u!58 &1586519764
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -2288,6 +2293,10 @@ PrefabInstance:
     - target: {fileID: 1340455244429637947, guid: b8f654767839ea3479de369fda305d5a, type: 3}
       propertyPath: m_Name
       value: Sign
+      objectReference: {fileID: 0}
+    - target: {fileID: 1340455244429637950, guid: b8f654767839ea3479de369fda305d5a, type: 3}
+      propertyPath: transitionToScene
+      value: MainMenu
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b8f654767839ea3479de369fda305d5a, type: 3}
