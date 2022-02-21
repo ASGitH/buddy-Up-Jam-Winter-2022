@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/EL/Scenes/Final.unity
     guid: c1f39bde694ad984a9e3d7fe7c870a4f
+  - enabled: 1
+    path: Assets/Alexis/Scenes/PartThree.unity
+    guid: ff29c2ac03b1d024d840bb557c10678e
   m_configObjects: {}
