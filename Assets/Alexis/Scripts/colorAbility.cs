@@ -20,7 +20,17 @@ public class colorAbility : MonoBehaviour
     public GameObject objectToAppear;
     #endregion
 
-    void Start() { if (objectToAppear != null && objectToAppear.activeSelf) { objectToAppear.SetActive(false); } }
+    void Start() 
+    {
+        if (_colorAbilityActions.ToString() == "use")
+        {
+            GetComponent<SpriteRenderer>().enabled = false;
+
+            transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = false;
+        }
+
+        if (objectToAppear != null && objectToAppear.activeSelf) { objectToAppear.SetActive(false); }
+    }
 
     void Update() { }
 
@@ -34,6 +44,7 @@ public class colorAbility : MonoBehaviour
 
                 GetComponent<EdgeCollider2D>().enabled = true; 
             }
+            if (_colorAbilityActions.ToString() == "use") { transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = false; }
         }
     }
 
@@ -41,7 +52,9 @@ public class colorAbility : MonoBehaviour
     {
         if(collision.tag == "Player")
         {
-            if(Input.GetKeyDown(KeyCode.E))
+            if (_colorAbilityActions.ToString() == "use") { transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = true; }
+
+            if (Input.GetKeyDown(KeyCode.E))
             {
                 if (_colorAbilityActions.ToString() == "pickup")
                 {

@@ -5,9 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class sceneManagement : MonoBehaviour
 {
-    void Start() { }
+    private GameObject playerGameObject;
 
-    void Update() { }
+    void Start() { playerGameObject = GameObject.FindGameObjectWithTag("Player"); }
+
+    void Update() { if (playerGameObject != null && playerGameObject.transform.position.y < -25f) { SceneManager.GetActiveScene(); } }
 
     public void loadScene(string _sceneName) { SceneManager.LoadScene(_sceneName); }
 }
