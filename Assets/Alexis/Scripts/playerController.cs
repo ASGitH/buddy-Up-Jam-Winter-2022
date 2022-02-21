@@ -7,6 +7,8 @@ public class playerController : MonoBehaviour
     #region Private
     private Animator playerAnimator;
 
+    private AudioSource audioSource;
+
     private bool isCurrentlyClimbing = false, isCurrentlyJumping = false, isCurrentlyMoving = false, isCurrentlySprinting = false;
 
     private float horizontalMovement = 0f, verticalMovement = 0f;
@@ -22,12 +24,18 @@ public class playerController : MonoBehaviour
     public int jumpHeight = 16;
     public int climbSpeed = 4, movementSpeed = /*1*/ 8;
 
+    // 0 - Jump, 1 - Walk
+    public List<AudioClip> musicSfxClips = new List<AudioClip>();
+
     public List<string> colorsAcquired = new List<string>();
     #endregion
 
     void Start() 
-    { 
+    {
+        audioSource = GetComponent<AudioSource>();
+
         playerAnimator = GetComponent<Animator>(); 
+        
         rb2D = GetComponent<Rigidbody2D>();
 
         originalGravityScale = rb2D.gravityScale;
@@ -72,8 +80,15 @@ public class playerController : MonoBehaviour
         climb();
 
         if (horizontalMovement != 0f) 
-        { 
-            if(horizontalMovement > 0f) { GetComponent<SpriteRenderer>().flipX = false; }
+        {
+            if (GetComponent<AudioSource>().clip != musicSfxClips[1] && !isCurrentlyJumping)
+            {
+                audioSource.clip = musicSfxClips[1];
+                audioSource.loop = true;
+                audioSource.Play();
+            }
+
+            if (horizontalMovement > 0f) { GetComponent<SpriteRenderer>().flipX = false; }
             else { GetComponent<SpriteRenderer>().flipX = true; }
 
             isCurrentlyMoving = true;
@@ -86,11 +101,28 @@ public class playerController : MonoBehaviour
 
             if(!isCurrentlyMoving && !isCurrentlySprinting) { playerAnimator.SetBool("isMoving", false); }
 
-            if (rb2D.velocity.x == 0f) { if (timeToSwitchDirection != 0.1875f) { timeToSwitchDirection = 0.1875f; } }
+            if (rb2D.velocity.x == 0f) 
+            {
+                if(!isCurrentlyJumping)
+                {
+                    audioSource.clip = null;
+                    audioSource.loop = false;
+                    audioSource.Stop();
+                }
+
+                if (timeToSwitchDirection != 0.1875f) { timeToSwitchDirection = 0.1875f; }
+            }
         }
 
         // Jump
         if (Input.GetKey(KeyCode.Space) && isAbleToJump && !isCurrentlyJumping) { rb2D.AddForce(Vector2.up * jumpHeight, ForceMode2D.Impulse); }
+
+        if(audioSource.clip != musicSfxClips[0] && isCurrentlyJumping)
+        {
+            audioSource.clip = musicSfxClips[0];
+            audioSource.loop = false;
+            audioSource.Play();
+        }
 
         sprint();
 
