@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/EL/Scenes/LadderIntro.unity
     guid: 5f0f0efbe1582b54cbb2fe7e92f27d23
+  - enabled: 1
+    path: Assets/EL/Scenes/Final.unity
+    guid: c1f39bde694ad984a9e3d7fe7c870a4f
   m_configObjects: {}

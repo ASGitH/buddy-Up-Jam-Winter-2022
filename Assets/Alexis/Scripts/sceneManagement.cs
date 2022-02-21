@@ -9,7 +9,7 @@ public class sceneManagement : MonoBehaviour
 
     void Start() { playerGameObject = GameObject.FindGameObjectWithTag("Player"); }
 
-    void Update() { if (playerGameObject != null && playerGameObject.transform.position.y < -25f) { SceneManager.GetActiveScene(); } }
+    void Update() { if (playerGameObject != null && playerGameObject.transform.position.y < -50f) { SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); } }
 
     public void hideGameObject(GameObject _gameObject) { _gameObject.SetActive(false); }
 
