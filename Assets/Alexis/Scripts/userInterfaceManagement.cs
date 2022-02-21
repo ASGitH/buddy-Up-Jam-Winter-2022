@@ -21,10 +21,12 @@ public class userInterfaceManagement : MonoBehaviour
 
     public void displayDialogueUserInterface(dialogueScript _dialogue)
     {
-        dialogueUI.SetActive(true);
+        if(_dialogue != null)
+        {
+            dialogueUI.SetActive(true);
 
-        // GameObject.FindGameObjectWithTag("Player").GetComponent<playerController>().isAbleToMove = false;
-
-        StartCoroutine(referenceToDialogueManagement.stepThroughDialogue(_dialogue));
+            StartCoroutine(referenceToDialogueManagement.stepThroughDialogue(_dialogue));
+        }
+        else { if (dialogueUI.activeSelf) { dialogueUI.SetActive(false); } }
     }
 }
