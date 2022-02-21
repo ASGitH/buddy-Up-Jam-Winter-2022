@@ -606,7 +606,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "- Alexis Serna - Programmer\n\n- Jenny Vi Pham - \nWriter\n\njhom - Artist\n"
+  m_text: "- Alexis Serna - Programmer\n\n- Jenny Vi Pham - \nWriter\n\n- John Ryan
+    Falco - Designer\n\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1947,7 +1948,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "- John Ryan Falco - Designer\n\n- Pavel Kovbasyuk - \nAudio\n\n- Tony
+  m_text: "- Jonathan Witkin - \nArtist\n\n- Pavel Kovbasyuk - \nAudio\n\n- Tony
     Payment - \nDesigner\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

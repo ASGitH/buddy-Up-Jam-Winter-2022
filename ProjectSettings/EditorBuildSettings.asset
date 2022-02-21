@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/Alexis/Scenes/PartOne.unity
     guid: ed18a02b07ac3f349af3dc021b9c02f1
   - enabled: 1
+    path: Assets/EL/Scenes/Tutorial.unity
+    guid: 7fe0fc7d55080b84c81fa4ab31158a7c
+  - enabled: 1
     path: Assets/EL/Scenes/LadderIntro.unity
     guid: 5f0f0efbe1582b54cbb2fe7e92f27d23
   - enabled: 1

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class dialogueResponseHandler : MonoBehaviour
@@ -28,7 +29,8 @@ public class dialogueResponseHandler : MonoBehaviour
 
         tempResponseButtons.Clear();
 
-        referenceToUserInterfaceManagement.displayDialogueUserInterface(_response._dialogueScript);
+        if (_response._action.ToString() != "") { SceneManager.LoadScene(_response.transitionToScene); }
+        else { referenceToUserInterfaceManagement.displayDialogueUserInterface(_response._dialogueScript); }
     }
 
     public void showResponses(dialogueResponse[] _responses)

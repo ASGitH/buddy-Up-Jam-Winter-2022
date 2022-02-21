@@ -2447,7 +2447,7 @@ MonoBehaviour:
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
-            m_StringArgument: LadderIntro
+            m_StringArgument: Tutorial
             m_BoolArgument: 0
           m_CallState: 2
     - m_PersistentCalls:
@@ -5150,10 +5150,14 @@ MonoBehaviour:
   hasResponses: 1
   isAffectedByDirector: 1
   responses:
-  - _dialogueScript: {fileID: 0}
+  - _action: 1
+    _dialogueScript: {fileID: 0}
     responseText: No
-  - _dialogueScript: {fileID: 1861873832}
+    transitionToScene: MainMenu
+  - _action: 0
+    _dialogueScript: {fileID: 1861873832}
     responseText: Yes
+    transitionToScene: 
   timeBetweenDialogueStrings:
   - 2
   - 3

@@ -3,12 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
 
+public enum dialogueActions { _null, sceneTransition };
+
 [System.Serializable]
 public class dialogueResponse
 {
+    public dialogueActions _action = new dialogueActions();
+
     public dialogueScript _dialogueScript;
 
     public string responseText;
+    public string transitionToScene;
 }
 
 public class dialogueScript : MonoBehaviour
