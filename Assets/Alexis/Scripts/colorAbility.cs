@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public enum colorAbilities { bridge, jump, ladder, _null };
-public enum colorAbilityActions { climb, _null, pickup, use };
+public enum colorAbilityActions { climb, _null, pickup, transitionScene, use };
 
 public class colorAbility : MonoBehaviour
 {
@@ -18,13 +19,15 @@ public class colorAbility : MonoBehaviour
     public colorAbilityActions _colorAbilityActions = new colorAbilityActions();
 
     public GameObject objectToAppear;
+
+    public string transitionToScene;
     #endregion
 
     void Start() 
     {
-        if (_colorAbilityActions.ToString() == "use")
+        if (_colorAbilityActions.ToString() == "transitionScene" || _colorAbilityActions.ToString() == "use")
         {
-            GetComponent<SpriteRenderer>().enabled = false;
+            if (_colorAbilityActions.ToString() != "transitionScene") { GetComponent<SpriteRenderer>().enabled = false; }
 
             transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = false;
         }
@@ -44,15 +47,15 @@ public class colorAbility : MonoBehaviour
 
                 GetComponent<EdgeCollider2D>().enabled = true; 
             }
-            if (_colorAbilityActions.ToString() == "use") { transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = false; }
+            if (_colorAbilityActions.ToString() == "transitionScene" || _colorAbilityActions.ToString() == "use") { transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = false; }
         }
     }
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if(collision.tag == "Player")
+        if (collision.tag == "Player")
         {
-            if (_colorAbilityActions.ToString() == "use") { transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = true; }
+            if (_colorAbilityActions.ToString() == "transitionScene" || _colorAbilityActions.ToString() == "use") { transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = true; }
 
             if (Input.GetKey(KeyCode.E))
             {
@@ -62,6 +65,7 @@ public class colorAbility : MonoBehaviour
 
                     gameObject.SetActive(false);
                 }
+                else if (_colorAbilityActions.ToString() == "transitionScene" && transitionToScene != "") { SceneManager.LoadScene(transitionToScene); }
                 else if (_colorAbilityActions.ToString() == "use")
                 {
                     foreach (string _color in collision.gameObject.GetComponent<playerController>().colorsAcquired)
