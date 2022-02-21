@@ -54,7 +54,7 @@ public class colorAbility : MonoBehaviour
         {
             if (_colorAbilityActions.ToString() == "use") { transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = true; }
 
-            if (Input.GetKeyDown(KeyCode.E))
+            if (Input.GetKey(KeyCode.E))
             {
                 if (_colorAbilityActions.ToString() == "pickup")
                 {
