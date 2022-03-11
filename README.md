@@ -21,10 +21,13 @@ An artist remembers how to see the bigger picture. **You can find the link to th
   - Twitter: [ASGDTweet](https://twitter.com/ASGDTweet)
 
 * **Jenny Vi Pham** - Writer
+  - Instagram: [jennyviphamwrites](https://www.instagram.com/jennyviphamwrites)
+  - itch.io: [Jenny](https://itch.io/profile/jennyvipham)
+  - Twitter: [jennyvipham](https://twitter.com/jennyvipham)
 
 * **John Ryan Falco** - Designer
   - Instagram: [jrfdesign18](https://www.instagram.com/jrfdesign18)
-  - LinkedIn: [ohn Ryan Falco](https://www.linkedin.com/in/johnfalco318)
+  - LinkedIn: [John Ryan Falco](https://www.linkedin.com/in/johnfalco318)
   - Twitter: [x777Swordz](https://twitter.com/x777Swordz)
 
 * **Jonathan Witkin** - Artist
